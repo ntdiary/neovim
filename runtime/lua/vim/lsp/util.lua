@@ -1578,6 +1578,7 @@ function M.open_floating_preview(contents, syntax, opts)
   validate('syntax', syntax, 'string', true)
   validate('opts', opts, 'table', true)
   opts = opts or {}
+  opts.border = opts.border or 'rounded' -- like border :)
   opts.wrap = opts.wrap ~= false -- wrapping by default
   opts.focus = opts.focus ~= false
   opts.close_events = opts.close_events or { 'CursorMoved', 'CursorMovedI', 'InsertCharPre' }
