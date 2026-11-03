@@ -112,6 +112,7 @@ enum {
   MT_RE_OFF = 8,  // add for regexp match
   MT_MASK = 7,    // mask for printing priority
   MT_COUNT = 16,
+  MT_TFU_OFF = MT_COUNT,  // from tagfunc
 };
 
 static char *mt_names[MT_COUNT/2] =
@@ -1205,7 +1206,7 @@ static int find_tagfunc_tags(char *pat, garray_T *ga, int *match_count, int flag
     if (!name_only) {
       char *p = mfp;
 
-      *p++ = MT_GL_OTH + 1;   // mtt
+      *p++ = (MT_GL_OTH | MT_TFU_OFF) + 1;   // mtt
       *p++ = TAG_SEP;     // no tag file name
 
       STRCPY(p, res_name);
@@ -2687,7 +2688,7 @@ static int jumpto_tag(const char *lbuf_arg, int forceit, bool keep_help)
 
   // Expand file name, when needed (for environment variables).
   // If 'tagrelative' option set, may change file name.
-  fname = expand_tag_fname(fname, tagp.tag_fname, true);
+  fname = expand_tag_fname(fname, tagp.tag_fname, (lbuf_arg[0] & MT_TFU_OFF) == 0);
   tofree_fname = fname;         // free() it later
 
   // Check if the file with the tag exists before abandoning the current
